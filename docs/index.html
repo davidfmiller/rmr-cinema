@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>theater</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="https://davidfmiller.github.io/man/man.css">
+  <link rel="stylesheet" type="text/css" href="build/theater.css">
+  <style>
+    body {
+      min-width: 0;
+      min-height: 0;
+
+    }
+    #man {
+      position: relative;
+      z-index: 1;
+      width: auto;
+    }
+
+    section {
+      min-width: 100%;
+      min-height: 100%;
+      background: #000;
+      position: fixed;
+      left: 0;
+      top: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    footer {
+      width: 400px;
+      height: 225px;
+      background: red;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      margin-top: 10px;
+    }
+    
+    footer button {
+      position: relative;
+      z-index: 2;
+    }
+
+    #man button[class^='load-'] {
+      background: rgba(255,255,255,0.5);
+    }
+    
+  </style>
+</head>
+<body>
+
+  <div id="man">
+    <h1><i>🎥</i> theater</h1>
+    <button class="load-sources">Load Sources</button>
+    <button class="play-pause" disabled>Play/pause</button>
+  </div>
+
+  <section>
+
+  </section>
+
+  <footer>
+    <button class="load-src">Load Src</button>
+    <button class="play-pause" disabled>Play/pause</button>
+  </footer>
+
+<script src="build/theater.bundle.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(event) {
+
+    var
+    theaterSources = null,
+    theaterSRC = null;
+
+    var buttons = {
+      sources: document.querySelector('button.load-sources'),
+      src: document.querySelector('button.load-src'),
+      sourcesPlayPause: document.querySelector('#man button.play-pause'),
+      srcPlayPause: document.querySelector('footer button.play-pause')
+    }
+
+    buttons.sources.addEventListener('click', function(e) {
+      theaterSources = new Theater({
+        node: 'section',
+        attrs : { },
+        debug : true,
+        resize : true,
+        sources : {
+          'video/mp4' : 'https://www.banfflakelouise.com/sites/default/files/html5vid/brandamp_bllt_html5bannervideo_720p_5mb.mp4'
+        }
+      });
+      theaterSources.on('load', function() {
+        buttons.sources.setAttribute('disabled', 1),
+        buttons.sourcesPlayPause.removeAttribute('disabled');
+      });
+      theaterSources.load();
+    });
+
+    buttons.src.addEventListener('click', function(e) {
+
+      theaterSRC = new Theater({
+        node: document.querySelector('footer'),
+        aspect : 1.5
+      });
+      theaterSRC.on('load', function() {
+        buttons.src.setAttribute('disabled', 1),
+        buttons.srcPlayPause.removeAttribute('disabled');
+      });
+      theaterSRC.load('https://www.banfflakelouise.com/sites/default/files/html5vid/brandamp_bllt_html5bannervideo_720p_5mb.mp4');
+    });
+
+    buttons.sourcesPlayPause.addEventListener('click', function(e) {
+      theaterSources.playPause();
+    });
+
+    buttons.srcPlayPause.addEventListener('click', function(e) {
+      theaterSRC.playPause();
+    });
+  });
+</script>
+</body>
+</html>
