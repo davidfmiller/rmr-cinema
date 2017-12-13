@@ -13,11 +13,11 @@ const config = {
     filename: 'theater.bundle.js'
   },
   watch: true,
-  plugins: [/*
+  plugins: [
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false }
     })
-  */],
+  ],
   module: {
     rules: [
       {
