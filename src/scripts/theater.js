@@ -1,4 +1,4 @@
-(function() {
+(() => {
 
   const
   /*
@@ -67,11 +67,11 @@
     });
 
     this.video.addEventListener('play', () => {
-    console.log('play!!');
+//    console.log('play!!');
       playing = true;
     });
     this.video.addEventListener('pause', () => {
-    console.log('pause!!');
+//    console.log('pause!!');
       playing = false;
     });
 
@@ -97,19 +97,22 @@
       const computed = window.getComputedStyle(self.parent),
       size = {
         width: self.options.resize ? window.innerWidth : parseInt(computed.width, 10),
-        height: self.options.resize ? window.innerHeight : parseInt(computed.width, 10)
+        height: self.options.resize ? window.innerHeight : parseInt(computed.height, 10)
       };
+
+      console.log(aspect, size.width / size.height);
 
 //      section.style.width = width + 'px';
 //      section.style.height = parseInt(computed.height, 10) + 'px';
 
-      if ((size.width / size.height) > aspect) {
-        self.video.style.width = size.width + 'px';
-        self.video.style.height = '';
-      } else {
-        self.video.style.height = size.height + 'px';
-        self.video.style.width = '';
-      }
+        if ((size.width / size.height) > aspect) {
+          self.video.style.width = size.width + 'px';
+          self.video.style.height = '';
+        } else {
+          self.video.style.height = size.height + 'px';
+          self.video.style.width = '';
+        }
+
 
       if (self.options.debug) {
         console.log('resized video to ' + JSON.stringify(size));
@@ -138,24 +141,21 @@
     /**
      * Begin loading the video
      *
-     * @param {String} src - optional, string to apply to `src` attribute of the <video> element
+     * @param {Object} sources - optional, string to apply to `src` attribute of the <video> element
      * @return {Object} instance for chaining
      * @chainable
      */
-    this.load = function(src) {
+    this.load = function(sources) {
 
-      if (arguments.length > 0) {
-        this.video.setAttribute('src', src);
-        return;
-      }
+      const videos = arguments.length > 0 ? sources : this.options.sources;
 
-      for (const i in this.options.sources) {
-        if (! this.options.sources.hasOwnProperty(i)) {
+      for (const i in videos) {
+        if (! videos.hasOwnProperty(i)) {
           continue;
         }
         const node = document.createElement('source');
         node.setAttribute('type', i);
-        node.setAttribute('src', this.options.sources[i]);
+        node.setAttribute('src', videos[i]);
         this.video.appendChild(node);
       }
 
@@ -203,6 +203,16 @@
       return JSON.stringify({ parent: this.parent, options: self.options});
     };
 
+    /**
+     * Remove video and associated elements from DOM
+     *
+     */
+    this.destroy = function() {
+      while (this.parent.childNodes.length > 0) {
+        this.parent.removeChild(this.parent.childNodes[0]);
+      }
+      this.options = this.video = this.parent = nil;
+    };
   };
 
 

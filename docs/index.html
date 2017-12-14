@@ -61,6 +61,13 @@
       <button class="play-pause" disabled>Play/pause</button>
     </footer>
 
+    <select>
+      <option value="">Default</option>
+      <option value="empty">No Videos</option>
+      <option value="mp4">MP4</option>
+      <option value="ogv">OGV</option>
+    </select>
+    <button class="destroy">Destroy</button>
   </div>
 
   <section>
@@ -74,24 +81,63 @@
 
     var
     theaterSources = null,
-    theaterSRC = null;
+    theaterSRC = null,
+    map = 
+    VIDEOS = {
+      'video/ogg' : 'assets/video.ogv',
+      'video/mp4' : 'assets/video.mp4',
+      'video/webm' : 'assets/video.webm'
+    };
+
+    document.querySelector('select').addEventListener('change', function(e) {
+      var
+      val = e.target.value;
+      switch (val) {
+        case '':
+          map = VIDEOS;
+          break;
+        case 'empty':
+          map = {};
+          break;
+        case 'mp4':
+          map = { 'video/mp4' : VIDEOS['video/mp4'] };
+          break;
+        case 'ogv':
+          map = { 'video/ogg' : VIDEOS['video/ogg'] };
+          break;
+      }
+//      console.log(sel.value);
+    });
 
     var buttons = {
       sources: document.querySelector('button.load-sources'),
       src: document.querySelector('button.load-src'),
       sourcesPlayPause: document.querySelector('#man button.play-pause'),
-      srcPlayPause: document.querySelector('footer button.play-pause')
+      srcPlayPause: document.querySelector('footer button.play-pause'),
+      destroy: document.querySelector('button.destroy')
     }
+
+    buttons.destroy.addEventListener('click', function(e) {
+      if (theaterSources) {
+        theaterSources.destroy();
+        theaterSources = null;
+      }
+
+      if (theaterSRC) {
+        theaterSRC.destroy();
+        theaterSRC = null;
+      }
+    });
 
     buttons.sources.addEventListener('click', function(e) {
       theaterSources = new Theater({
         node: 'section',
         attrs : { },
         debug : true,
+        fallback : '',
+        aspect : 7/4,
         resize : true,
-        sources : {
-          'video/mp4' : 'https://www.banfflakelouise.com/sites/default/files/html5vid/brandamp_bllt_html5bannervideo_720p_5mb.mp4'
-        }
+        sources : map
       });
       theaterSources.on('load', function() {
         buttons.sources.setAttribute('disabled', 1),
@@ -104,13 +150,15 @@
 
       theaterSRC = new Theater({
         node: document.querySelector('footer'),
-        aspect : 1.5
+        sources : map,
+        resize : false,
+        aspect : 7/4,
       });
       theaterSRC.on('load', function() {
         buttons.src.setAttribute('disabled', 1),
         buttons.srcPlayPause.removeAttribute('disabled');
       });
-      theaterSRC.load('https://www.banfflakelouise.com/sites/default/files/html5vid/brandamp_bllt_html5bannervideo_720p_5mb.mp4');
+      theaterSRC.load();
     });
 
     buttons.sourcesPlayPause.addEventListener('click', function(e) {
