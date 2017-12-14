@@ -127,6 +127,9 @@
         theaterSRC.destroy();
         theaterSRC = null;
       }
+      
+      buttons.sources.removeAttribute('disabled');
+      buttons.src.removeAttribute('disabled');
     });
 
     buttons.sources.addEventListener('click', function(e) {
@@ -134,7 +137,6 @@
         node: 'section',
         attrs : { },
         debug : true,
-        fallback : '',
         aspect : 7/4,
         resize : true,
         sources : map
@@ -150,7 +152,6 @@
 
       theaterSRC = new Theater({
         node: document.querySelector('footer'),
-        sources : map,
         resize : false,
         aspect : 7/4,
       });
@@ -158,7 +159,7 @@
         buttons.src.setAttribute('disabled', 1),
         buttons.srcPlayPause.removeAttribute('disabled');
       });
-      theaterSRC.load();
+      theaterSRC.load(map);
     });
 
     buttons.sourcesPlayPause.addEventListener('click', function(e) {

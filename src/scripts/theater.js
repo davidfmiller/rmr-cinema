@@ -76,6 +76,7 @@
     });
 
     const curtains = document.createElement('div');
+    curtains.setAttribute('aria-hidden', 'true');
     curtains.classList.add('vw-theater-curtains');
 
     const attrs = merge({
@@ -127,11 +128,17 @@
     }
 
     window.addEventListener('blur', () => {
-      self.video.pause();
+      try { 
+        self.video.pause();
+      } catch(e) {
+      }
     });
 
     window.addEventListener('focus', () => {
-      self.video.play();
+      try { 
+        self.video.play();
+      } catch(e) {
+      }
     });
 
     // add curtains and <video> element to parent
@@ -172,11 +179,13 @@
       if (self.options.debug) {
         console.log('toggling play/pause');
       }
-      if (playing) {
-        this.video.pause();
-      } else {
-        this.video.play();
-      }
+      try {
+        if (playing) {
+          this.video.pause();
+        } else {
+          this.video.play();
+        }
+      } catch(e) { }
 
       return this;
     };
