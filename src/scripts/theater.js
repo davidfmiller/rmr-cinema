@@ -211,7 +211,7 @@
       while (this.parent.childNodes.length > 0) {
         this.parent.removeChild(this.parent.childNodes[0]);
       }
-      this.options = this.video = this.parent = nil;
+      this.options = this.video = this.parent = null;
     };
   };
 
