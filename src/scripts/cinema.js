@@ -131,16 +131,18 @@
     }
 
     window.addEventListener('blur', () => {
-      try { 
+      try {
         self.video.pause();
-      } catch(e) {
+      } catch (e) {
+        //
       }
     });
 
     window.addEventListener('focus', () => {
-      try { 
+      try {
         self.video.play();
-      } catch(e) {
+      } catch (e) {
+        //
       }
     });
 
@@ -188,7 +190,9 @@
         } else {
           this.video.play();
         }
-      } catch(e) { }
+      } catch (e) {
+        //
+      }
 
       return this;
     };
