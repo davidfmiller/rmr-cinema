@@ -1,6 +1,9 @@
 (() => {
 
   const
+
+  PREFIX = 'rmr-cinema-',
+
   /*
    * Merge two objects into one, values in b take precedence over values in a
    *
@@ -32,7 +35,7 @@
 // is the browser window in focus?
 //  FOCUS = true;
 
-  const Theater = function(options) {
+  const Cinema = function(options) {
 
     this.options = merge( { debug: false }, options);
     let playing = false;
@@ -58,12 +61,12 @@
       return;
     }
 
-    this.parent.classList.add('vw-theater-root');
+    this.parent.classList.add(PREFIX + 'root');
 
     this.video.addEventListener('loadeddata', () => {
       events.load();
       playing = true;
-      self.parent.classList.add('vw-theater-loaded');
+      self.parent.classList.add(PREFIX + 'loaded');
     });
 
     this.video.addEventListener('play', () => {
@@ -77,7 +80,7 @@
 
     const curtains = document.createElement('div');
     curtains.setAttribute('aria-hidden', 'true');
-    curtains.classList.add('vw-theater-curtains');
+    curtains.classList.add(PREFIX + 'curtains');
 
     const attrs = merge({
       muted: 'muted',
@@ -91,7 +94,7 @@
         this.video.setAttribute(i, attrs[i]);
       }
     }
-    document.body.classList.add('vw-theater');
+    document.body.classList.add('rmr-cinema');
 
     const resizer = () => {
 
@@ -226,5 +229,5 @@
 
 
 
-  module.exports = Theater;
+  module.exports = Cinema;
 })();

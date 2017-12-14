@@ -1,14 +1,14 @@
-.vw-theater-root {
+.rmr-cinema-root {
 
   overflow: hidden;
 
-  &.vw-theater-loaded {
-    .vw-theater-curtains {
+  &.rmr-cinema-loaded {
+    .rmr-cinema-curtains {
       opacity: 0;
     }
   }
 
-  .vw-theater-curtains {
+  .rmr-cinema-curtains {
     width: 100%;
     height: 100%;
     position: absolute;
