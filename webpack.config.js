@@ -10,7 +10,7 @@ const config = {
   entry: './src/scripts/index.js',
   output: {
     path: path.resolve(__dirname, 'docs/build/'),
-    filename: 'theater.bundle.js'
+    filename: 'cinema.bundle.js'
   },
   watch: true,
   plugins: [

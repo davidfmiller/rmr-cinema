@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>theater</title>
+  <title>Cinema</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="https://davidfmiller.github.io/man/man.css">
-  <link rel="stylesheet" type="text/css" href="build/theater.css">
+  <link rel="stylesheet" type="text/css" href="build/cinema.css">
   <style>
     body {
       min-width: 0;
@@ -75,7 +75,7 @@
   </section>
 
 
-<script src="build/theater.bundle.js"></script>
+<script src="build/cinema.bundle.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function(event) {
 
@@ -133,7 +133,7 @@
     });
 
     buttons.sources.addEventListener('click', function(e) {
-      theaterSources = new Theater({
+      theaterSources = new Cinema({
         node: 'section',
         attrs : { },
         debug : true,
@@ -150,7 +150,7 @@
 
     buttons.src.addEventListener('click', function(e) {
 
-      theaterSRC = new Theater({
+      theaterSRC = new Cinema({
         node: document.querySelector('footer'),
         resize : false,
         aspect : 7/4,

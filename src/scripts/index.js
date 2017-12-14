@@ -1,4 +1,4 @@
 (() => {
   'use strict';
-  window.Theater = require('./theater.js');
+  window.Cinema = require('./cinema.js');
 })();
