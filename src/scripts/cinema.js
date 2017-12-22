@@ -4,32 +4,7 @@
 
   PREFIX = 'rmr-cinema-',
 
-  /*
-   * Merge two objects into one, values in b take precedence over values in a
-   *
-   * @param a {Object}
-   * @param b {Object}
-
-   * @return Object
-   */
-  merge = function(a, b) {
-    const o = {};
-    let i;
-    for (i in a) {
-      if (a.hasOwnProperty(i)) {
-        o[i] = a[i];
-      }
-    }
-    if (! b) {
-      return o;
-    }
-    for (i in b) {
-      if (b.hasOwnProperty(i)) {
-        o[i] = b[i];
-      }
-    }
-    return o;
-  };
+  RMR = require('rmr-util');
 
 //  let
 // is the browser window in focus?
@@ -37,7 +12,7 @@
 
   const Cinema = function(options) {
 
-    this.options = merge( { debug: false }, options);
+    this.options = RMR.Object.merge({ debug: false }, options);
     let playing = false;
     const
     self = this;
@@ -82,7 +57,7 @@
     curtains.setAttribute('aria-hidden', 'true');
     curtains.classList.add(PREFIX + 'curtains');
 
-    const attrs = merge({
+    const attrs = RMR.Object.merge({
       muted: 'muted',
       loop: 'loop',
       autoplay: 'autoplay',
