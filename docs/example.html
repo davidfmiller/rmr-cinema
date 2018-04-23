@@ -29,44 +29,33 @@
 </head>
 <body>
 
-  <div id="man">
-
-  </div>
-
   <section>
 
   </section>
-
 
 <script src="build/cinema.bundle.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function(event) {
 
     var
-    cinema = null,
-    map = 
-    VIDEOS = {
-      'video/ogg' : 'assets/video.ogv',
-      'video/mp4' : 'assets/video.mp4',
-      'video/webm' : 'assets/video.webm'
-    };
+    projector = new Cinema({
+      node: 'section',
+      attrs : { },
+      debug : true,
+      aspect : 7/4,
+      resize : true,
+      sources : {
+        'video/ogg' : 'assets/video.ogv',
+        'video/mp4' : 'assets/video.mp4',
+        'video/webm' : 'assets/video.webm'
+      }
+    });
+    projector.on('load', function() {
 
-      cinema = new Cinema({
-        node: 'section',
-        attrs : { },
-        debug : true,
-        aspect : 7/4,
-        resize : true,
-        sources : map
-      });
-      cinema.on('load', function() {
-//        buttons.sources.setAttribute('disabled', 1),
-//        buttons.sourcesPlayPause.removeAttribute('disabled');
-      });
-      cinema.load();
+    });
+    projector.load();
   });
 
-//  });
 </script>
 </body>
 </html>
