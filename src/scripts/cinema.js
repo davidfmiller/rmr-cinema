@@ -1,3 +1,6 @@
+
+
+
 (() => {
 
   const
@@ -6,14 +9,19 @@
 
   RMR = require('rmr-util');
 
-//  let
-// is the browser window in focus?
-//  FOCUS = true;
-
+  /**
+   *
+   *
+   * @params {Object} options - containing the following keys
+   *    resize {Boolean, optional} - if `true`, will add window resize listener to adjust video
+   *    debug {Boolean, optional} - if `true`, debug messages will be logged to the browser console on
+   *    aspect {Float, optional} - aspect ratio of the video, defaults to 1.777777
+   */
   const Cinema = function(options) {
 
     this.options = RMR.Object.merge({ debug: false }, options);
     let playing = false;
+
     const
     self = this;
 
@@ -24,8 +32,8 @@
     let
     events = { // default event listeners
       load: function() {
-        //if (self.options.debug) {
-          console.log('video loaded!!');
+//        if (self.options.debug) {
+//          console.log('video loaded!!');
 //        }
       }
     };
@@ -42,10 +50,12 @@
     this.parent.classList.add(PREFIX + 'root');
 
     this.video.addEventListener('loadeddata', () => {
+
+      if (self.debug) {
+        console.log('cinema loaded');
+      }
+
       events.load();
-
-    console.log(events.load);
-
       playing = true;
       self.parent.classList.add(PREFIX + 'loaded');
     });
@@ -55,7 +65,10 @@
       playing = true;
     });
     this.video.addEventListener('pause', () => {
-//    console.log('pause!!');
+
+      if (self.debug) {
+        console.log('cinema paused');
+      }
       playing = false;
     });
 
@@ -95,7 +108,7 @@
 
 
       if (self.options.debug) {
-        console.log('resized video to ' + JSON.stringify(size));
+        console.log('cinema resized video to ' + JSON.stringify(size));
       }
     };
     resizer();
@@ -206,8 +219,6 @@
       this.options = this.video = this.parent = null;
     };
   };
-
-
 
   module.exports = Cinema;
 })();
