@@ -34,11 +34,7 @@
     aspect = this.options.hasOwnProperty('aspect') ? this.options.aspect :  16 / 9;
     let
     events = { // default event listeners
-      load: function() {
-//        if (self.options.debug) {
-//          console.log('video loaded!!');
-//        }
-      }
+      load: function() { }
     };
 
     events = RMR.Object.merge(events, options.events);
