@@ -13,9 +13,12 @@
    *
    *
    * @params {Object} options - containing the following keys
+   *    node {String|Node} - the parent node to append the <video> object to
    *    resize {Boolean, optional} - if `true`, will add window resize listener to adjust video
    *    debug {Boolean, optional} - if `true`, debug messages will be logged to the browser console on
    *    aspect {Float, optional} - aspect ratio of the video, defaults to 1.777777
+   *.   events {Object, optional} - 
+   *.   attrs {Object, optional} - list of attributes that should be applied to the <video> element (ex: `{'muted' : 1}`)
    */
   const Cinema = function(options) {
 

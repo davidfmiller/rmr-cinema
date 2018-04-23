@@ -43,8 +43,7 @@
   document.addEventListener('DOMContentLoaded', function(event) {
 
     var
-    theaterSources = null,
-    theaterSRC = null,
+    cinema = null,
     map = 
     VIDEOS = {
       'video/ogg' : 'assets/video.ogv',
@@ -52,7 +51,7 @@
       'video/webm' : 'assets/video.webm'
     };
 
-      theaterSources = new Cinema({
+      cinema = new Cinema({
         node: 'section',
         attrs : { },
         debug : true,
@@ -60,11 +59,11 @@
         resize : true,
         sources : map
       });
-      theaterSources.on('load', function() {
+      cinema.on('load', function() {
 //        buttons.sources.setAttribute('disabled', 1),
 //        buttons.sourcesPlayPause.removeAttribute('disabled');
       });
-      theaterSources.load();
+      cinema.load();
   });
 
 //  });
