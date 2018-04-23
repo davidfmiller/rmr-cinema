@@ -20,14 +20,17 @@
     this.parent = typeof options.node === 'string' ? document.querySelector(options.node) : options.node;
 
     const
-    aspect = this.options.hasOwnProperty('aspect') ? this.options.aspect :  16 / 9,
+    aspect = this.options.hasOwnProperty('aspect') ? this.options.aspect :  16 / 9;
+    let
     events = { // default event listeners
       load: function() {
-        if (self.options.debug) {
-          console.log('video loaded');
-        }
+        //if (self.options.debug) {
+          console.log('video loaded!!');
+//        }
       }
     };
+
+    events = RMR.Object.merge(events, options.events);
 
     this.video = this.parent ? document.createElement('video') : null;
 
@@ -40,6 +43,9 @@
 
     this.video.addEventListener('loadeddata', () => {
       events.load();
+
+    console.log(events.load);
+
       playing = true;
       self.parent.classList.add(PREFIX + 'loaded');
     });
@@ -78,11 +84,6 @@
         width: self.options.resize ? window.innerWidth : parseInt(computed.width, 10),
         height: self.options.resize ? window.innerHeight : parseInt(computed.height, 10)
       };
-
-      console.log(aspect, size.width / size.height);
-
-//      section.style.width = width + 'px';
-//      section.style.height = parseInt(computed.height, 10) + 'px';
 
         if ((size.width / size.height) > aspect) {
           self.video.style.width = size.width + 'px';

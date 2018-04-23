@@ -52,7 +52,7 @@
 <body>
 
   <div id="man">
-    <h1><i>🎥</i> cinema</h1>
+    <h1><i>🎥</i> rmr-cinema</h1>
     <button class="load-sources">Load Sources</button>
     <button class="play-pause" disabled>Play/pause</button>
 
@@ -153,6 +153,7 @@
       theaterSRC = new Cinema({
         node: document.querySelector('footer'),
         resize : false,
+        debug : true,
         aspect : 7/4,
       });
       theaterSRC.on('load', function() {
