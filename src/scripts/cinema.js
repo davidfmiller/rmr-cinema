@@ -53,15 +53,21 @@
       if (self.debug) {
         console.log('cinema loaded');
       }
-
       events.load();
-      playing = true;
+//      playing = true;
       self.parent.classList.add(PREFIX + 'loaded');
+      self.play();
     });
 
     this.video.addEventListener('play', () => {
-//    console.log('play!!');
+      console.log('play!!');
       playing = true;
+
+      let button = self.parent.querySelector('button');
+      if (button) {
+        button.parentNode.removeChild(button);
+      }
+      
     });
     this.video.addEventListener('pause', () => {
 
@@ -76,7 +82,6 @@
     curtains.classList.add(PREFIX + 'curtains');
 
     const attrs = RMR.Object.merge({
-      muted: 'muted',
       loop: 'loop',
       autoplay: 'autoplay',
       preload: 'auto'
@@ -87,6 +92,8 @@
         this.video.setAttribute(i, attrs[i]);
       }
     }
+
+    this.video.setAttribute('muted', '');
     document.body.classList.add('rmr-cinema');
 
     const resizer = () => {
@@ -97,14 +104,13 @@
         height: self.options.resize ? window.innerHeight : parseInt(computed.height, 10)
       };
 
-        if ((size.width / size.height) > aspect) {
-          self.video.style.width = size.width + 'px';
-          self.video.style.height = '';
-        } else {
-          self.video.style.height = size.height + 'px';
-          self.video.style.width = '';
-        }
-
+      if ((size.width / size.height) > aspect) {
+        self.video.style.width = size.width + 'px';
+        self.video.style.height = '';
+      } else {
+        self.video.style.height = size.height + 'px';
+        self.video.style.width = '';
+      }
 
       if (self.options.debug) {
         console.log('cinema resized video to ' + JSON.stringify(size));
@@ -115,6 +121,7 @@
     if (options.resize) {
       window.addEventListener('resize', () => {
         resizer();
+        self.play();
       });
     }
 
@@ -126,17 +133,44 @@
       }
     });
 
+    window.addEventListener('click', () => {
+      if (! playing) {
+        self.play();
+      }
+    });
+
+
     window.addEventListener('focus', () => {
-      try {
-        self.video.play();
-      } catch (e) {
-        //
+      if (! playing) {
+        self.play();
       }
     });
 
     // add curtains and <video> element to parent
     this.parent.insertBefore(this.video, this.parent.childNodes[0]);
     this.parent.insertBefore(curtains, this.parent.childNodes[0]);
+
+    this.play = function() {
+      let button = self.parent.querySelector('button');
+      if (button) {
+        button.parentNode.removeChild(button);
+      }
+
+      const promise = this.video.play();
+      if (promise !== undefined) {
+        promise.then(_ => {
+        }).catch(error => {
+          if (! button) {
+            var button = document.createElement('button');
+            this.parent.insertBefore(button, this.parent.firstChild);
+            button.addEventListener('click', function() {
+              self.video.play();
+              button.parentNode.removeChild(button);
+            });
+          }
+        });
+      }    
+    };
 
     /**
      * Begin loading the video
