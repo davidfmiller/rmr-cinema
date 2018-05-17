@@ -162,6 +162,7 @@
         }).catch(error => {
           if (! button) {
             var button = document.createElement('button');
+            button.setAttribute('aria-title', 'Play Video');
             this.parent.insertBefore(button, this.parent.firstChild);
             button.addEventListener('click', function() {
               self.video.play();
