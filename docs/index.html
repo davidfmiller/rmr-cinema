@@ -3,20 +3,8 @@
 <head>
   <title>Cinema</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="https://davidfmiller.github.io/man/man.css">
   <link rel="stylesheet" type="text/css" href="build/cinema.css">
   <style>
-    body {
-      min-width: 0;
-      min-height: 0;
-
-    }
-    #man {
-      position: relative;
-      z-index: 1;
-
-    }
-
     section {
       min-width: 100%;
       min-height: 100%;
@@ -28,149 +16,41 @@
       z-index: 0;
     }
     
-    footer {
-      width: 400px;
-      height: 225px;
+    p {
+      height: 600px;
       background: red;
-      position: relative;
-      z-index: 2;
-      box-shadow: 0 0 5px rgba(0,0,0,0.5);
-      margin-top: 10px;
     }
-    
-    footer button {
-      position: relative;
-      z-index: 2;
-    }
-
-    #man button[class^='load-'] {
-      background: rgba(255,255,255,0.5);
-    }
-    
   </style>
 </head>
 <body>
-
-  <div id="man">
-    <h1><i>🎥</i> rmr-cinema</h1>
-    <button class="load-sources">Load Sources</button>
-    <button class="play-pause" disabled>Play/pause</button>
-
-    <footer>
-      <button class="load-src">Load Src</button>
-      <button class="play-pause" disabled>Play/pause</button>
-    </footer>
-
-    <select>
-      <option value="">Default</option>
-      <option value="empty">No Videos</option>
-      <option value="mp4">MP4</option>
-      <option value="ogv">OGV</option>
-    </select>
-    <button class="destroy">Destroy</button>
-  </div>
-
   <section>
 
   </section>
-
 
 <script src="build/cinema.bundle.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function(event) {
 
     var
-    theaterSources = null,
-    theaterSRC = null,
-    map = 
-    VIDEOS = {
-      'video/ogg' : 'assets/video.ogv',
-      'video/mp4' : 'assets/video.mp4',
-      'video/webm' : 'assets/video.webm'
-    };
-
-    document.querySelector('select').addEventListener('change', function(e) {
-      var
-      val = e.target.value;
-      switch (val) {
-        case '':
-          map = VIDEOS;
-          break;
-        case 'empty':
-          map = {};
-          break;
-        case 'mp4':
-          map = { 'video/mp4' : VIDEOS['video/mp4'] };
-          break;
-        case 'ogv':
-          map = { 'video/ogg' : VIDEOS['video/ogg'] };
-          break;
+    projector = new Cinema({
+      node: 'section',
+      attrs : { },
+      debug : true,
+      aspect : 7/4,
+      resize : true,
+      sources : {
+        'video/mp4' : 'assets/video.mp4',
+        'video/ogg' : 'assets/video.ogv',
+        'video/webm' : 'assets/video.webm'
       }
-//      console.log(sel.value);
     });
+    projector.on('load', function() {
 
-    var buttons = {
-      sources: document.querySelector('button.load-sources'),
-      src: document.querySelector('button.load-src'),
-      sourcesPlayPause: document.querySelector('#man button.play-pause'),
-      srcPlayPause: document.querySelector('footer button.play-pause'),
-      destroy: document.querySelector('button.destroy')
-    }
-
-    buttons.destroy.addEventListener('click', function(e) {
-      if (theaterSources) {
-        theaterSources.destroy();
-        theaterSources = null;
-      }
-
-      if (theaterSRC) {
-        theaterSRC.destroy();
-        theaterSRC = null;
-      }
-      
-      buttons.sources.removeAttribute('disabled');
-      buttons.src.removeAttribute('disabled');
     });
-
-    buttons.sources.addEventListener('click', function(e) {
-      theaterSources = new Cinema({
-        node: 'section',
-        attrs : { },
-        debug : true,
-        aspect : 7/4,
-        resize : true,
-        sources : map
-      });
-      theaterSources.on('load', function() {
-        buttons.sources.setAttribute('disabled', 1),
-        buttons.sourcesPlayPause.removeAttribute('disabled');
-      });
-      theaterSources.load();
-    });
-
-    buttons.src.addEventListener('click', function(e) {
-
-      theaterSRC = new Cinema({
-        node: document.querySelector('footer'),
-        resize : false,
-        debug : true,
-        aspect : 7/4,
-      });
-      theaterSRC.on('load', function() {
-        buttons.src.setAttribute('disabled', 1),
-        buttons.srcPlayPause.removeAttribute('disabled');
-      });
-      theaterSRC.load(map);
-    });
-
-    buttons.sourcesPlayPause.addEventListener('click', function(e) {
-      theaterSources.playPause();
-    });
-
-    buttons.srcPlayPause.addEventListener('click', function(e) {
-      theaterSRC.playPause();
-    });
+    projector.load();
   });
+
 </script>
 </body>
 </html>
+
