@@ -5,7 +5,7 @@
 
   const
 
-  PREFIX = 'rmr-cinema-',
+  PREFIX = 'rmr-cinema',
 
   RMR = require('rmr-util');
 
@@ -14,9 +14,9 @@
    *
    * @params {Object} options - containing the following keys
    *    node {String|Node} - the parent node to append the <video> object to
-   *    resize {Boolean, optional} - if `true`, will add window resize listener to adjust video
+//   *    resize {Boolean, optional} - if `true`, will add window resize listener to adjust video
    *    debug {Boolean, optional} - if `true`, debug messages will be logged to the browser console on
-   *    aspect {Float, optional} - aspect ratio of the video, defaults to 1.777777
+//   *    aspect {Float, optional} - aspect ratio of the video, defaults to 1.777777
    *.   events {Object, optional} - 
    *.   attrs {Object, optional} - list of attributes that should be applied to the <video> element (ex: `{'muted' : 1}`)
    */
@@ -28,7 +28,7 @@
     const
     self = this;
 
-    this.parent = typeof options.node === 'string' ? document.querySelector(options.node) : options.node;
+    this.parent = RMR.Node.get(options.node);
 
     const
     aspect = this.options.hasOwnProperty('aspect') ? this.options.aspect :  16 / 9;
@@ -39,14 +39,14 @@
 
     events = RMR.Object.merge(events, options.events);
 
-    this.video = this.parent ? document.createElement('video') : null;
+    this.video = this.parent ? RMR.Node.create('video') : null;
 
     if (! this.video) {
-      throw new Error('Invalid root in Theater constructor');
+      throw new Error('Invalid root in rmr-cinema constructor `' +  options.node + '`');
       return;
     }
 
-    this.parent.classList.add(PREFIX + 'root');
+    this.parent.classList.add(PREFIX);
 
     this.video.addEventListener('loadeddata', () => {
 
@@ -55,19 +55,19 @@
       }
       events.load();
 //      playing = true;
-      self.parent.classList.add(PREFIX + 'loaded');
+      self.parent.classList.add('rmr-loaded');
       self.play();
     });
 
     this.video.addEventListener('play', () => {
-      console.log('play!!');
+//      console.log('play!!');
       playing = true;
 
       let button = self.parent.querySelector('button');
       if (button) {
         button.parentNode.removeChild(button);
       }
-      
+
     });
     this.video.addEventListener('pause', () => {
 
@@ -77,68 +77,72 @@
       playing = false;
     });
 
-    const curtains = document.createElement('div');
-    curtains.setAttribute('aria-hidden', 'true');
-    curtains.classList.add(PREFIX + 'curtains');
+    const curtains = RMR.Node.create('div', { class: 'rmr-curtains', 'aria-hidden': true });
+//     curtains.setAttribute('aria-hidden', 'true');
+//     curtains.classList.add('rmr-curtains');
 
     const attrs = RMR.Object.merge({
       loop: 'loop',
-      autoplay: 'autoplay',
+      muted: 'true',
+//      autoplay: 'autoplay',
       preload: 'auto'
     }, options.attrs);
 
     for (const i in attrs) {
-      if (attrs.hasOwnProperty(i)) {
-        this.video.setAttribute(i, attrs[i]);
+      if (RMR.Object.has(attrs, i)) {
+        if (attrs[i]) {
+          this.video.setAttribute(i, attrs[i]);
+        }
       }
     }
 
-    this.video.setAttribute('muted', '');
-    document.body.classList.add('rmr-cinema');
+//    this.video.setAttribute('muted', '');
+//    document.body.classList.add('rmr-cinema');
 
-    const resizer = () => {
+//     const resizer = () => {
+// 
+//       const computed = window.getComputedStyle(self.parent),
+//       size = {
+//         width: self.options.resize ? window.innerWidth : parseInt(computed.width, 10),
+//         height: self.options.resize ? window.innerHeight : parseInt(computed.height, 10)
+//       };
+// 
+//       if ((size.width / size.height) > aspect) {
+//         self.video.style.width = size.width + 'px';
+//         self.video.style.height = '';
+//       } else {
+//         self.video.style.height = size.height + 'px';
+//         self.video.style.width = '';
+//       }
+// 
+//       if (self.options.debug) {
+//         console.log('cinema resized video to ' + JSON.stringify(size));
+//       }
+//     };
+//     resizer();
 
-      const computed = window.getComputedStyle(self.parent),
-      size = {
-        width: self.options.resize ? window.innerWidth : parseInt(computed.width, 10),
-        height: self.options.resize ? window.innerHeight : parseInt(computed.height, 10)
-      };
-
-      if ((size.width / size.height) > aspect) {
-        self.video.style.width = size.width + 'px';
-        self.video.style.height = '';
-      } else {
-        self.video.style.height = size.height + 'px';
-        self.video.style.width = '';
-      }
-
-      if (self.options.debug) {
-        console.log('cinema resized video to ' + JSON.stringify(size));
-      }
-    };
-    resizer();
-
-    if (options.resize) {
-      window.addEventListener('resize', () => {
-        resizer();
-        self.play();
-      });
-    }
+//     if (options.resize) {
+//       window.addEventListener('resize', () => {
+//         resizer();
+//         self.play();
+//       });
+//     }
 
     window.addEventListener('blur', () => {
       try {
         self.video.pause();
       } catch (e) {
-        //
+        console.error(e);
       }
     });
 
+/*
     window.addEventListener('click', () => {
       if (! playing) {
         self.play();
       }
     });
-
+*/
 
     window.addEventListener('focus', () => {
       if (! playing) {
@@ -153,7 +157,7 @@
     this.play = function() {
       let button = self.parent.querySelector('button');
       if (button) {
-        button.parentNode.removeChild(button);
+        RMR.Node.remove(button);
       }
 
       const promise = this.video.play();
@@ -166,7 +170,7 @@
             this.parent.insertBefore(button, this.parent.firstChild);
             button.addEventListener('click', function() {
               self.video.play();
-              button.parentNode.removeChild(button);
+              RMR.Node.remove(button);
             });
           }
         });

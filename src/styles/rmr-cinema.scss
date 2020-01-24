@@ -1,14 +1,15 @@
-.rmr-cinema-root {
+.rmr-cinema {
 
   overflow: hidden;
+  position: relative;
 
-  &.rmr-cinema-loaded {
-    .rmr-cinema-curtains {
+  &.rmr-loaded {
+    .rmr-curtains {
       opacity: 0;
     }
   }
 
-  .rmr-cinema-curtains {
+  .rmr-curtains {
     background: #000;
     height: 100%;
     left: 0;
@@ -21,10 +22,8 @@
   }
 
   video {
-    left: 0;
+    width: 100%;
     object-fit: cover;
-    position: absolute;
-    top: 0;
   }
 
   button {
