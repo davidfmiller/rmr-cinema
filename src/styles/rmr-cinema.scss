@@ -2,6 +2,8 @@
 
   overflow: hidden;
   position: relative;
+  padding: 0;
+  margin: 0;
 
   &.rmr-loaded {
     .rmr-curtains {
@@ -19,11 +21,15 @@
     transition: opacity 1s;
     width: 100%;
     z-index: 2;
+    padding: 0;
+    margin: 0;
   }
 
   video {
     width: 100%;
     object-fit: cover;
+    padding: 0;
+    margin: 0;
   }
 
   button {
@@ -43,6 +49,7 @@
     transition: transform 0.2s, background 0.2s;
     width: 50px;
     z-index: 3;
+    padding: 0;
 
     &:focus,
     &:hover {
