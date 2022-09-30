@@ -1,12 +1,19 @@
 {
   "name": "rmr-cinema",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "",
   "scripts": {
     "test": ""
   },
-  "author": "",
+  "author": {
+    "name": "davidfmiller",
+    "url": "https://dfmllc.ca"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidfmiller/rmr-cinema.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -19,6 +26,6 @@
     "webpack": "^4.41.5"
   },
   "dependencies": {
-    "rmr-util": "^1.1.75"
+    "rmr-util": "^1.1.130"
   }
 }
